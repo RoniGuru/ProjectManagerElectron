@@ -1,31 +1,18 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
+import { Provider } from 'react-redux';
+import { store } from './state/store';
+import Home from './Home';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div className="p-4 bg-blue-500 h-96 w-full ">
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1 className="text-5xl">Vite + Reacts</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edits <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Provider store={store}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 
