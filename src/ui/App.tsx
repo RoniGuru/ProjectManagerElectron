@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from './state/store';
 import Home from './Pages/Home';
 import PageLayout from './PageLayout';
+import CreateProject from './Pages/CreateProject';
 
 function App() {
   return (
@@ -15,6 +16,16 @@ function App() {
             element={
               <PageLayout>
                 <Home />
+              </PageLayout>
+            }
+          />
+        </Routes>
+        <Routes>
+          <Route
+            path="/CreateProject"
+            element={
+              <PageLayout>
+                <CreateProject />
               </PageLayout>
             }
           />

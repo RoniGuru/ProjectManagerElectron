@@ -9,9 +9,7 @@ import {
 import { useEffect } from 'react';
 
 export default function Home() {
-  const { selectedProject, items } = useSelector(
-    (state: RootState) => state.Project
-  );
+  const { items } = useSelector((state: RootState) => state.Project);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
