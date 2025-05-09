@@ -3,21 +3,60 @@ import type { Task } from '../../../db/types';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../state/store';
 import { FaPlus } from 'react-icons/fa';
+import CreateTaskForm from './CreateTaskForm';
 
 export default function Boards() {
   const { selectedProject } = useSelector((state: RootState) => state.Project);
+
+  const [creatingTask, setCreatingTask] = useState<boolean>(false);
 
   useEffect(() => {
     fetchTasks();
   }, [selectedProject]);
 
   async function fetchTasks() {
-    if (selectedProject) {
-      setTasks(await window.database.getTasksByProject(selectedProject.id));
-    }
+    // if (selectedProject) {
+    //   setTasks(await window.database.getTasksByProject(selectedProject.id));
+    // }
   }
 
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      id: 1,
+      name: 'Research user requirements',
+      project_id: 1,
+      description: 'Gather feedback from stakeholders',
+      status: 'todo',
+    },
+    {
+      id: 2,
+      name: 'Create wireframes',
+      project_id: 1,
+      description: 'Design initial UI mockups',
+      status: 'todo',
+    },
+    {
+      id: 3,
+      name: 'Setup project structure',
+      project_id: 1,
+      description: 'Initialize repository and configure build tools',
+      status: 'inProgress',
+    },
+    {
+      id: 4,
+      project_id: 1,
+      name: 'Create component library',
+      description: 'Build reusable UI components',
+      status: 'inProgress',
+    },
+    {
+      id: 5,
+      project_id: 1,
+      name: 'Write unit tests',
+      description: 'Create test suite for core functionality',
+      status: 'done',
+    },
+  ]);
 
   const todoTasks = tasks.filter((task) => task.status === 'todo');
   const inProgressTasks = tasks.filter((task) => task.status === 'inProgress');
@@ -68,10 +107,16 @@ export default function Boards() {
           <FaPlus
             size={30}
             className="hover:opacity-45 cursor-pointer text-gray-700"
-            onClick={() => console.log('click')}
+            onClick={() => setCreatingTask(!creatingTask)}
           />
         </div>
         <div className="p-2 flex-1 overflow-y-auto">
+          {creatingTask && selectedProject ? (
+            <CreateTaskForm
+              id={selectedProject.id}
+              setCreatingTask={setCreatingTask}
+            />
+          ) : null}
           {todoTasks.map((task) => (
             <div
               key={task.id}
