@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { SiTicktick } from 'react-icons/si';
+import { useDispatch } from 'react-redux';
+import { type AppDispatch } from '../../state/store';
+import { addTask } from '../../state/TaskSlice';
 
 export default function CreateTaskForm({
   id,
@@ -9,8 +12,13 @@ export default function CreateTaskForm({
   setCreatingTask: (creatingTask: boolean) => void;
 }) {
   const [name, setName] = useState<string>('');
+  const dispatch = useDispatch<AppDispatch>();
+
   async function handleCreateTask() {
     if (name != '') {
+      await dispatch(
+        addTask({ project_id: id, name, description: '', status: 'done' })
+      );
     }
     setName('');
     setCreatingTask(false);
