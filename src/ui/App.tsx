@@ -5,7 +5,7 @@ import { store } from './state/store';
 import Home from './Pages/Home';
 import PageLayout from './PageLayout';
 import CreateProject from './Pages/CreateProject';
-import ProjectPage from './Pages/Project';
+import ProjectPage from './Pages/ProjectPage';
 
 function App() {
   return (

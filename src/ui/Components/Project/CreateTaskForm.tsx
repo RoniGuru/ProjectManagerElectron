@@ -17,7 +17,7 @@ export default function CreateTaskForm({
   async function handleCreateTask() {
     if (name != '') {
       await dispatch(
-        addTask({ project_id: id, name, description: '', status: 'done' })
+        addTask({ project_id: id, name, description: '', status: 'todo' })
       );
     }
     setName('');

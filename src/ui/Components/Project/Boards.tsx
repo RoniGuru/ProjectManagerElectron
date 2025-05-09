@@ -1,62 +1,42 @@
 import { useEffect, useState } from 'react';
 import type { Task } from '../../../db/types';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../state/store';
+import { useSelector, useDispatch } from 'react-redux';
+import type { AppDispatch, RootState } from '../../state/store';
 import { FaPlus } from 'react-icons/fa';
 import CreateTaskForm from './CreateTaskForm';
+import { fetchTasksByProject } from '../../state/TaskSlice';
 
 export default function Boards() {
   const { selectedProject } = useSelector((state: RootState) => state.Project);
+  const taskState = useSelector((state: RootState) => state.Task);
 
   const [creatingTask, setCreatingTask] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     fetchTasks();
   }, [selectedProject]);
 
+  //update tasks when there is a change
+  useEffect(() => {
+    setTasks(taskState.tasks);
+  }, [taskState.tasks]);
+
   async function fetchTasks() {
-    // if (selectedProject) {
-    //   setTasks(await window.database.getTasksByProject(selectedProject.id));
-    // }
+    if (selectedProject) {
+      console.log('fetching');
+      const resultAction = await dispatch(
+        fetchTasksByProject(selectedProject.id)
+      );
+
+      if (fetchTasksByProject.fulfilled.match(resultAction)) {
+        setTasks(resultAction.payload);
+      }
+    }
   }
 
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: 1,
-      name: 'Research user requirements',
-      project_id: 1,
-      description: 'Gather feedback from stakeholders',
-      status: 'todo',
-    },
-    {
-      id: 2,
-      name: 'Create wireframes',
-      project_id: 1,
-      description: 'Design initial UI mockups',
-      status: 'todo',
-    },
-    {
-      id: 3,
-      name: 'Setup project structure',
-      project_id: 1,
-      description: 'Initialize repository and configure build tools',
-      status: 'inProgress',
-    },
-    {
-      id: 4,
-      project_id: 1,
-      name: 'Create component library',
-      description: 'Build reusable UI components',
-      status: 'inProgress',
-    },
-    {
-      id: 5,
-      project_id: 1,
-      name: 'Write unit tests',
-      description: 'Create test suite for core functionality',
-      status: 'done',
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const todoTasks = tasks.filter((task) => task.status === 'todo');
   const inProgressTasks = tasks.filter((task) => task.status === 'inProgress');
