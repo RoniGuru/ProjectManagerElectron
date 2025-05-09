@@ -104,8 +104,13 @@ const projectsSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
-    selectProject: (state, action: PayloadAction<Project | null>) => {
-      state.selectedProject = action.payload;
+    selectProject: (state, action: PayloadAction<number>) => {
+      const select = state.items.find(
+        (project) => project.id === action.payload
+      );
+      if (select) {
+        state.selectedProject = select;
+      }
     },
     clearProjectError: (state) => {
       state.error = null;

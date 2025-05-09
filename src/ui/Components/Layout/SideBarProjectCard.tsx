@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Project } from '../../../db/types';
+import { useDispatch } from 'react-redux';
+import { selectProject } from '../../state/ProjectSlice';
 
 export default function SideBarProjectCard({ project }: { project: Project }) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div
       key={project.id}
@@ -17,7 +20,10 @@ export default function SideBarProjectCard({ project }: { project: Project }) {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => navigate(`/Project/${project.id}`)}
+      onClick={() => {
+        dispatch(selectProject(project.id));
+        navigate(`/Project`);
+      }}
     >
       <div className="p-2 ">
         <h3 className=" font-semibold text-white mb-2">{project.name}</h3>
