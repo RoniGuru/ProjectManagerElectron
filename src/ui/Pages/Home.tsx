@@ -1,22 +1,72 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { increment } from '../state/counterSlice';
-import { type RootState } from '../state/store';
+
+import { type AppDispatch, type RootState } from '../state/store';
+import {
+  addProject,
+  deleteProject,
+  fetchProjects,
+} from '../state/ProjectSlice';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const count = useSelector((state: RootState) => state.counter);
-  const dispatch = useDispatch();
+  const { selectedProject, items } = useSelector(
+    (state: RootState) => state.Project
+  );
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, []);
 
   return (
     <div>
       <div className="p-4 bg-blue-500 h-96 w-full "></div>
       <h1 className="text-5xl">Vite + Reacts</h1>
-      <div className="card">
-        <div>{count.value}</div>
-        <button onClick={() => dispatch(increment())}>Increment</button>
+      <div className="flex flex-col">
+        {items.map((project) => (
+          <div key={project.id}>
+            {project.name} {project.id}
+          </div>
+        ))}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="flex flex-col">
+        <button
+          className="p-4 bg-blue-300 hover:opacity-40"
+          onClick={() =>
+            dispatch(
+              addProject({
+                name: 'project',
+                description: 'this is a project',
+                completed: false,
+                completed_at: new Date().toDateString(),
+                color: 'red',
+                icon: '',
+              })
+            )
+          }
+        >
+          add Project
+        </button>
+
+        <button
+          className="p-4 bg-blue-300  hover:opacity-40"
+          onClick={() => {
+            if (items[0]) {
+              dispatch(deleteProject(items[0].id));
+            }
+          }}
+        >
+          delete Project
+        </button>
+        <button
+          className="p-4 bg-blue-300  hover:opacity-40"
+          onClick={async () =>
+            console.log(await window.database.getAllProjects())
+          }
+        >
+          log console
+        </button>
+      </div>
     </div>
   );
 }
