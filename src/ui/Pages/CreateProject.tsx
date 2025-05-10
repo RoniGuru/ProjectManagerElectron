@@ -7,11 +7,7 @@ import CreateProjectForm from '../Components/CreateProjectForm';
 export default function CreateProject() {
   const navigate = useNavigate();
   return (
-    <div className="    flex items-center flex-col">
-      <header className="w-full ">
-        <button onClick={() => navigate('/')}>go back</button>
-      </header>
-
+    <div className="    h-full flex justify-center items-center">
       <CreateProjectForm />
     </div>
   );

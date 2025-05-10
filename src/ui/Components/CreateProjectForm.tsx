@@ -29,6 +29,11 @@ export default function CreateProjectForm() {
    * Make sure inputs are correct and returns true if they are
    */
   function validateInputs(): boolean {
+    if (name.length > 30 || name.length === 0) {
+      return false;
+    } else if (description.length > 100) {
+      return false;
+    }
     return true;
   }
 
@@ -54,20 +59,20 @@ export default function CreateProjectForm() {
   }
 
   return (
-    <div className="h-1/2 w-1/2 flex flex-col justify-center items-center gap-2 bg-gray-300">
+    <div className="h-3/4 w-1/2 flex flex-col justify-center items-center gap-6 bg-gray-300 p-2 rounded-2xl">
       <input
         type="text"
         placeholder="name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="p-2"
+        className="p-2 w-3/4 bg-white rounded-s"
       />
-      <input
-        type="text"
+      <textarea
+        rows={10}
         placeholder="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className="p-2"
+        className="p-2 w-3/4 bg-white rounded-s"
       />
       {/** Color picker */}
       <div className="w-full flex items-center flex-col justify-center ">
@@ -87,16 +92,24 @@ export default function CreateProjectForm() {
               : 'opacity-90'
           }
         `}
-            ></div>
+            />
           ))}
         </div>
       </div>
-      <button
-        onClick={handleCreateProject}
-        className="p-4 bg-slate-500 font-bold rounded-xl"
-      >
-        submit
-      </button>
+      <div className="w-full h-1/5  flex items-center justify-around ">
+        <button
+          className="p-4 bg-blue-400 text-white font-bold rounded-xl hover:scale-110 cursor-pointer ease-in duration-200 w-1/3"
+          onClick={() => navigate('/')}
+        >
+          Back
+        </button>
+        <button
+          onClick={handleCreateProject}
+          className="p-4 bg-green-400 font-bold rounded-xl text-white hover:scale-110 cursor-pointer ease-in duration-200 w-1/3 "
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
