@@ -30,7 +30,7 @@ export default function SideBarProjectCard({ project }: { project: Project }) {
   return (
     <div
       key={project.id}
-      className=" rounded-lg hover:bg-slate-200  cursor-pointer flex justify-between items-center pl-2 pr-2"
+      className=" rounded-lg h-16 cursor-pointer flex justify-between items-center pl-2 pr-2 duration-300 ease-in"
       style={{
         backgroundColor:
           isHovered || (selectedProject && selectedProject.id === project.id)
