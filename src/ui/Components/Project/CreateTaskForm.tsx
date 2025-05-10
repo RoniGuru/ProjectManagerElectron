@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { SiTicktick } from 'react-icons/si';
 import { useDispatch } from 'react-redux';
 import { type AppDispatch } from '../../state/store';
@@ -13,9 +13,18 @@ export default function CreateTaskForm({
 }) {
   const [name, setName] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Adjust height on content change
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [name]);
 
   async function handleCreateTask() {
-    if (name != '') {
+    if (name !== '') {
       await dispatch(
         addTask({ project_id: id, name, description: '', status: 'todo' })
       );
@@ -23,13 +32,16 @@ export default function CreateTaskForm({
     setName('');
     setCreatingTask(false);
   }
+
   return (
-    <div className="bg-white p-2 rounded mb-2 shadow flex justify-between  ">
-      <input
-        type="text"
+    <div className="bg-white p-2 rounded mb-2 shadow flex justify-between gap-4">
+      <textarea
+        ref={textareaRef}
+        value={name}
         placeholder="name"
-        className="p-1 w-3/4"
+        className="p-1 w-full  overflow-hidden"
         onChange={(e) => setName(e.target.value)}
+        rows={1}
       />
       <SiTicktick
         onClick={handleCreateTask}
