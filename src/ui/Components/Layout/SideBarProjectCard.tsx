@@ -4,12 +4,17 @@ import type { Project } from '../../../db/types';
 import { useDispatch } from 'react-redux';
 import { selectProject, deleteProject } from '../../state/ProjectSlice';
 import { ImCross } from 'react-icons/im';
-import { type AppDispatch } from '../../state/store';
+import type { AppDispatch, RootState } from '../../state/store';
+import { useSelector } from 'react-redux';
 
 export default function SideBarProjectCard({ project }: { project: Project }) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+
+  const selectedProject = useSelector(
+    (state: RootState) => state.Project.selectedProject
+  );
 
   function handleProjectDelete() {
     const isConfirmed = window.confirm(
@@ -21,15 +26,16 @@ export default function SideBarProjectCard({ project }: { project: Project }) {
       navigate('/');
     }
   }
+
   return (
     <div
       key={project.id}
       className=" rounded-lg hover:bg-slate-200  cursor-pointer flex justify-between items-center pl-2 pr-2"
       style={{
-        backgroundColor: isHovered ? project.color : '',
-        borderLeft: isHovered
-          ? `4px solid ${project.color}`
-          : '4px solid transparent',
+        backgroundColor:
+          isHovered || (selectedProject && selectedProject.id === project.id)
+            ? project.color
+            : '',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -41,7 +47,7 @@ export default function SideBarProjectCard({ project }: { project: Project }) {
       <div className="p-2 w-4/5">
         <h3 className=" font-semibold text-white mb-2">{project.name}</h3>
       </div>
-      {isHovered ? (
+      {isHovered || (selectedProject && selectedProject.id === project.id) ? (
         <ImCross
           size={24}
           onClick={(e) => {
