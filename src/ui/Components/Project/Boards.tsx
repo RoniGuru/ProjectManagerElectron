@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Task } from '../../../db/types';
 import { useSelector, useDispatch } from 'react-redux';
 import type { AppDispatch, RootState } from '../../state/store';
 import { FaPlus } from 'react-icons/fa';
 import CreateTaskForm from './CreateTaskForm';
-import {
-  deleteTask,
-  fetchTasksByProject,
-  updateTaskStatus,
-} from '../../state/TaskSlice';
+import { fetchTasksByProject, updateTaskStatus } from '../../state/TaskSlice';
+import TaskCard from './TaskCard';
 
 export default function Boards() {
   const { selectedProject } = useSelector((state: RootState) => state.Project);
@@ -56,10 +52,6 @@ export default function Boards() {
     e.preventDefault();
   }
 
-  function handleDeleteTask(taskId: number) {
-    dispatch(deleteTask(taskId));
-  }
-
   return (
     <div className="flex gap-4 overflow-auto flex-1 h-2/3">
       {/* To Do Column */}
@@ -86,23 +78,11 @@ export default function Boards() {
             />
           ) : null}
           {todoTasks.map((task) => (
-            <div
+            <TaskCard
               key={task.id}
-              className="bg-white p-3 rounded mb-2 shadow cursor-move"
-              draggable
-              onDragStart={(e) => handleDragStart(e, task.id)}
-            >
-              <div className="flex justify-between items-start">
-                <h3 className="font-medium">{task.name}</h3>
-                <button
-                  onClick={() => handleDeleteTask(task.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="text-gray-600 text-sm mt-1">{task.description}</p>
-            </div>
+              task={task}
+              handleDragStart={handleDragStart}
+            />
           ))}
         </div>
       </div>
@@ -120,23 +100,11 @@ export default function Boards() {
         </div>
         <div className="p-2 flex-1 overflow-y-auto">
           {inProgressTasks.map((task) => (
-            <div
+            <TaskCard
               key={task.id}
-              className="bg-white p-3 rounded mb-2 shadow cursor-move"
-              draggable
-              onDragStart={(e) => handleDragStart(e, task.id)}
-            >
-              <div className="flex justify-between items-start">
-                <h3 className="font-medium">{task.name}</h3>
-                <button
-                  onClick={() => handleDeleteTask(task.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="text-gray-600 text-sm mt-1">{task.description}</p>
-            </div>
+              task={task}
+              handleDragStart={handleDragStart}
+            />
           ))}
         </div>
       </div>
@@ -154,23 +122,11 @@ export default function Boards() {
         </div>
         <div className="p-2 flex-1 overflow-y-auto">
           {doneTasks.map((task) => (
-            <div
+            <TaskCard
               key={task.id}
-              className="bg-white p-3 rounded mb-2 shadow cursor-move"
-              draggable
-              onDragStart={(e) => handleDragStart(e, task.id)}
-            >
-              <div className="flex justify-between items-start">
-                <h3 className="font-medium">{task.name}</h3>
-                <button
-                  onClick={() => handleDeleteTask(task.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="text-gray-600 text-sm mt-1">{task.description}</p>
-            </div>
+              task={task}
+              handleDragStart={handleDragStart}
+            />
           ))}
         </div>
       </div>
