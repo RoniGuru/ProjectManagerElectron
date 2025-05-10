@@ -4,7 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { AppDispatch, RootState } from '../../state/store';
 import { FaPlus } from 'react-icons/fa';
 import CreateTaskForm from './CreateTaskForm';
-import { fetchTasksByProject } from '../../state/TaskSlice';
+import {
+  deleteTask,
+  fetchTasksByProject,
+  updateTaskStatus,
+} from '../../state/TaskSlice';
 
 export default function Boards() {
   const { selectedProject } = useSelector((state: RootState) => state.Project);
@@ -18,29 +22,17 @@ export default function Boards() {
     fetchTasks();
   }, [selectedProject]);
 
-  //update tasks when there is a change
-  useEffect(() => {
-    setTasks(taskState.tasks);
-  }, [taskState.tasks]);
-
   async function fetchTasks() {
     if (selectedProject) {
-      console.log('fetching');
-      const resultAction = await dispatch(
-        fetchTasksByProject(selectedProject.id)
-      );
-
-      if (fetchTasksByProject.fulfilled.match(resultAction)) {
-        setTasks(resultAction.payload);
-      }
+      await dispatch(fetchTasksByProject(selectedProject.id));
     }
   }
 
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  const todoTasks = tasks.filter((task) => task.status === 'todo');
-  const inProgressTasks = tasks.filter((task) => task.status === 'inProgress');
-  const doneTasks = tasks.filter((task) => task.status === 'done');
+  const todoTasks = taskState.tasks.filter((task) => task.status === 'todo');
+  const inProgressTasks = taskState.tasks.filter(
+    (task) => task.status === 'inProgress'
+  );
+  const doneTasks = taskState.tasks.filter((task) => task.status === 'done');
 
   const handleDragStart = (
     e: React.DragEvent<HTMLDivElement>,
@@ -56,11 +48,7 @@ export default function Boards() {
   ) {
     const taskId = e.dataTransfer.getData('taskId');
 
-    setTasks(
-      tasks.map((task) =>
-        task.id === Number(taskId) ? { ...task, status } : task
-      )
-    );
+    dispatch(updateTaskStatus({ id: Number(taskId), status }));
   }
 
   // Allow dropping
@@ -69,7 +57,7 @@ export default function Boards() {
   }
 
   function handleDeleteTask(taskId: number) {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    dispatch(deleteTask(taskId));
   }
 
   return (
