@@ -47,9 +47,7 @@ export default function CreateTaskForm({
         onClick={handleCreateTask}
         className="justify-center text-blue-500 h-12 hover:text-blue-800 cursor-pointer"
         size={24}
-      >
-        submit
-      </SiTicktick>
+      />
     </div>
   );
 }
