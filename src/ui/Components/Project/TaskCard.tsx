@@ -7,6 +7,7 @@ import { SiTicktick } from 'react-icons/si';
 import { FaXmark } from 'react-icons/fa6';
 import TextareaAutosize from 'react-textarea-autosize';
 import { IoTrashBin } from 'react-icons/io5';
+import { FiEdit } from 'react-icons/fi';
 
 export default function TaskCard({
   task,
@@ -16,6 +17,7 @@ export default function TaskCard({
   handleDragStart: (e: React.DragEvent<HTMLDivElement>, taskId: number) => void;
 }) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [name, setName] = useState<string>(task.name);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -36,43 +38,42 @@ export default function TaskCard({
   return (
     <div
       key={task.id}
-      className="bg-white p-3 rounded mb-2 shadow cursor-move w-full"
+      className="bg-white p-3 rounded mb-2 shadow cursor-move w-full hover:opacity-70 ease-in duration-150"
       draggable
       onDragStart={(e) => handleDragStart(e, task.id)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {isEditing ? (
-        <div style={{ height: 18 }} />
-      ) : (
-        <div className="w-full flex justify-end">
-          <IoTrashBin
-            size={18}
-            onClick={handleDeleteTask}
-            className=" text-red-500  hover:text-red-800 cursor-pointer"
-          />
-        </div>
-      )}
-      <div
-        className="flex justify-between items-start w-full"
-        onDoubleClick={(e) => {
-          e.stopPropagation;
-          setIsEditing(true);
-        }}
-      >
+      <div className="flex gap-2 w-full">
         {isEditing ? (
           <TextareaAutosize
             value={name}
             onChange={(e) => setName(e.target.value)}
             minRows={1}
             maxRows={10}
-            className="p-1 w-full cursor-pointer  "
+            className="p-1 w-full  "
           />
         ) : (
-          <h3 className="font-medium break-all p-1 flex-grow overflow-hidden w-full cursor-pointer">
+          <h3 className="font-medium break-all p-1 flex-grow overflow-hidden w-full  ">
             {task.name}
           </h3>
         )}
+
+        {isEditing ? (
+          <div />
+        ) : (
+          <div className="w-1/6 flex items-center justify-center">
+            <IoTrashBin
+              size={18}
+              onClick={handleDeleteTask}
+              className={` text-red-500  hover:text-red-800 cursor-pointer ${
+                isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </div>
+        )}
       </div>
-      <div className=" flex justify-end flex-row w-full  items-center gap-6 pr-2  h-[24px]">
+      <div className=" flex justify-end flex-row w-full  items-center gap-6 pr-2  h-[24px] mt-4 ">
         {isEditing ? (
           <>
             <SiTicktick
@@ -92,7 +93,16 @@ export default function TaskCard({
               className="justify-center text-red-500  hover:text-red-800 cursor-pointer"
             />
           </>
-        ) : null}
+        ) : (
+          <FiEdit
+            size={18}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
+            className="cursor-pointer hover:scale-125 ease-in duration-150"
+          />
+        )}
       </div>
     </div>
   );
