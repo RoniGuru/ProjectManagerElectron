@@ -5,7 +5,7 @@ import CreateProjectForm from '../Components/CreateProjectForm';
  */
 export default function CreateProject() {
   return (
-    <div className="    h-full flex justify-center items-center">
+    <div className="    h-full flex justify-center items-center ">
       <CreateProjectForm />
     </div>
   );

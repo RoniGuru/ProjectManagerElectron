@@ -11,7 +11,7 @@ export default function ProjectPage() {
     <div className="h-full">
       {currentProject ? (
         <>
-          <h1 className="w-full text-center text-3xl font-bold mb-10">
+          <h1 className="w-full text-center text-3xl font-bold mb-10 text-white">
             {currentProject.name}
           </h1>
           <Boards />

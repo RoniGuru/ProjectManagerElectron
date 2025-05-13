@@ -60,7 +60,7 @@ export default function Boards() {
         onDrop={(e) => handleDrop(e, 'todo')}
         onDragOver={handleDragOver}
       >
-        <div className="bg-gray-300 p-3 rounded-t-md flex justify-between">
+        <div className=" p-3 rounded-t-md flex justify-between">
           <h2 className="font-semibold text-gray-700">
             To Do ({todoTasks.length})
           </h2>
@@ -93,7 +93,7 @@ export default function Boards() {
         onDrop={(e) => handleDrop(e, 'inProgress')}
         onDragOver={handleDragOver}
       >
-        <div className="bg-gray-300 p-3 rounded-t-md">
+        <div className=" p-3 rounded-t-md">
           <h2 className="font-semibold text-gray-700">
             In Progress ({inProgressTasks.length})
           </h2>
@@ -115,7 +115,7 @@ export default function Boards() {
         onDrop={(e) => handleDrop(e, 'done')}
         onDragOver={handleDragOver}
       >
-        <div className="bg-gray-300 p-3 rounded-t-md">
+        <div className=" p-3 rounded-t-md">
           <h2 className="font-semibold text-gray-700">
             Done ({doneTasks.length})
           </h2>

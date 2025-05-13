@@ -6,7 +6,7 @@ export default function PageLayout({ children }: { children: ReactNode }) {
       <LayoutSideBar />
 
       {/* Main Content */}
-      <div className="flex-1 bg-blue-200 p-6 overflow-auto">{children}</div>
+      <div className="flex-1 bg-gray-900 p-6 overflow-auto">{children}</div>
     </div>
   );
 }
