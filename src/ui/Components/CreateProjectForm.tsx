@@ -99,7 +99,7 @@ export default function CreateProjectForm() {
       <div className="w-full h-1/5  flex items-center justify-around ">
         <button
           className="p-4 bg-blue-400 text-white font-bold rounded-xl hover:scale-110 cursor-pointer ease-in duration-200 w-1/3"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
         >
           Back
         </button>
