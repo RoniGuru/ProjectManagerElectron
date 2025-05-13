@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../state/store';
 import SideBarProjectCard from './SideBarProjectCard';
+import { FaHome } from 'react-icons/fa';
 
 export default function LayoutSideBar() {
   const { items } = useSelector((state: RootState) => state.Project);
@@ -11,10 +12,15 @@ export default function LayoutSideBar() {
     <div className="w-72 h-screen  bg-gray-800 text-white shadow-lg flex-col flex gap-2  justify-between  overflow-y-auto  minimal-scrollbar ">
       <div className="h-full">
         <div className="mb-1  p-4 flex  justify-around items-center ">
+          <FaHome
+            size={30}
+            className="hover:scale-115 ease-in duration-150 cursor-pointer"
+            onClick={() => navigate('/')}
+          />
           <h1 className="text-xl font-bold">Projects</h1>
           <FaPlus
             size={30}
-            className="hover:opacity-45 cursor-pointer"
+            className="hover:scale-115 ease-in duration-150 cursor-pointer"
             onClick={() => navigate('/CreateProject')}
           />
         </div>
