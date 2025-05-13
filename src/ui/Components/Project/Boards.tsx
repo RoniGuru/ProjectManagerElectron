@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { AppDispatch, RootState } from '../../state/store';
 import { FaPlus } from 'react-icons/fa';
@@ -14,16 +14,15 @@ export default function Boards() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    fetchTasks();
-  }, [selectedProject]);
-
-  async function fetchTasks() {
+  const fetchTasks = useCallback(async () => {
     if (selectedProject) {
       await dispatch(fetchTasksByProject(selectedProject.id));
     }
-  }
+  }, [selectedProject, dispatch]);
 
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
   const todoTasks = taskState.tasks.filter((task) => task.status === 'todo');
   const inProgressTasks = taskState.tasks.filter(
     (task) => task.status === 'inProgress'
