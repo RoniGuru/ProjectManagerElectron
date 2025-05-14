@@ -38,46 +38,34 @@ export default function TaskCard({
   return (
     <div
       key={task.id}
-      className="bg-white p-3 rounded mb-2 shadow cursor-move w-full hover:opacity-70 ease-in duration-150"
+      className="bg-white p-3 rounded mb-2 shadow cursor-move w-full hover:opacity-70 ease-in duration-150 flex"
       draggable
       onDragStart={(e) => handleDragStart(e, task.id)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex gap-2 w-full">
+      {/**text */}
+      <div className="flex gap-2 w-4/5">
         {isEditing ? (
           <TextareaAutosize
             value={name}
             onChange={(e) => setName(e.target.value)}
             minRows={1}
             maxRows={10}
-            className="p-1 w-full  "
+            className="p-1 w-full"
           />
         ) : (
-          <h3 className="font-medium break-all p-1 flex-grow overflow-hidden w-full  ">
+          <h3 className="font-medium break-all p-1 flex-grow overflow-hidden w-full">
             {task.name}
           </h3>
         )}
-
-        {isEditing ? (
-          <div />
-        ) : (
-          <div className="w-1/6 flex items-center justify-center">
-            <IoTrashBin
-              size={18}
-              onClick={handleDeleteTask}
-              className={` text-red-500  hover:text-red-800 cursor-pointer ${
-                isHovered ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          </div>
-        )}
       </div>
-      <div className=" flex justify-end flex-row w-full  items-center gap-6 pr-2  h-[24px] mt-4 ">
+      {/**buttons */}
+      <div className="flex justify-end items-center w-1/5 gap-6 pr-2 ">
         {isEditing ? (
-          <>
+          <div className="flex h-full items-end justify-around w-3/4 ">
             <SiTicktick
-              className="justify-center text-blue-500  hover:text-blue-800 cursor-pointer"
+              className="text-blue-500 hover:text-blue-800 cursor-pointer"
               size={18}
               onClick={(e) => {
                 e.stopPropagation();
@@ -90,18 +78,27 @@ export default function TaskCard({
                 e.stopPropagation();
                 handleEdit(false);
               }}
-              className="justify-center text-red-500  hover:text-red-800 cursor-pointer"
+              className="text-red-500 hover:text-red-800 cursor-pointer"
             />
-          </>
+          </div>
         ) : (
-          <FiEdit
-            size={18}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEditing(true);
-            }}
-            className="cursor-pointer hover:scale-125 ease-in duration-150"
-          />
+          <div className=" flex flex-col gap-4 h-full justify-between">
+            <IoTrashBin
+              size={18}
+              onClick={handleDeleteTask}
+              className={`text-red-500 hover:text-red-800 cursor-pointer ${
+                isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <FiEdit
+              size={18}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsEditing(true);
+              }}
+              className="cursor-pointer hover:scale-125 ease-in duration-150"
+            />
+          </div>
         )}
       </div>
     </div>
